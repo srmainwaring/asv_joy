@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>asv_joy_gazebo_plugins</name>
+  <version>0.0.0</version>
+  <description>
+    This package contains Gazebo plugins for controlling
+    joysticks and gamepads.
+  </description>
+
+  <maintainer email="rhys.mainwaring@me.com">Rhys Mainwaring</maintainer>
+
+  <license>GPLv3</license>
+
+  <author email="rhys.mainwaring@me.com">Rhys Mainwaring</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>gazebo</build_depend>
+  <build_depend>gazebo_ros</build_depend>
+  <build_depend>sdl</build_depend>
+  
+  <exec_depend>gazebo</exec_depend>
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>sdl</exec_depend>
+
+  <export>
+    <gazebo_ros plugin_path="${prefix}/lib"/>
+  </export>
+</package>

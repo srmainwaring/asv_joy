@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>asv_joy</name>
+  <version>0.0.0</version>
+  <description>
+    This package contains Gazebo plugins for controlling
+    joysticks and gamepads.
+  </description>
+
+  <maintainer email="rhys.mainwaring@me.com">Rhys Mainwaring</maintainer>
+  <license>GPLv3</license>
+  <author email="rhys.mainwaring@me.com">Rhys Mainwaring</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>asv_joy_gazebo_plugins</exec_depend>
+
+  <export>
+    <metapackage />
+  </export>
+</package>
