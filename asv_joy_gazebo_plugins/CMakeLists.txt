@@ -13,6 +13,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(catkin REQUIRED COMPONENTS gazebo_ros)
 find_package(gazebo REQUIRED)
 
+find_package(PkgConfig)
+pkg_check_modules(SDL REQUIRED sdl2)
+
 ############################################################################### 
 # Catkin...
 
@@ -21,8 +24,10 @@ catkin_package(
     include
   LIBRARIES
     SDLJoyPlugin
-  DEPENDS
+  CATKIN_DEPENDS
     gazebo_ros
+  DEPENDS
+    Boost
 )
 
 include_directories(
@@ -33,6 +38,7 @@ include_directories(
   ${IGNITION-COMMON_INCLUDE_DIRS}
   ${IGNITION-MATHS_INCLUDE_DIRS}
   ${IGNITION-MSGS_INCLUDE_DIRS}
+  ${SDL_INCLUDE_DIRS}
   )
 
 link_directories(
@@ -40,6 +46,7 @@ link_directories(
   ${IGNITION-COMMON_LIBRARY_DIRS}
   ${IGNITION-MATHS_LIBRARY_DIRS}
   ${IGNITION-MSGS_LIBRARY_DIRS}
+  ${SDL_LIBRARY_DIRS}
   )
 
 ############################################################################### 
@@ -58,6 +65,7 @@ target_link_libraries(SDLJoyPlugin
   ${Boost_LIBRARIES}
   ${catkin_LIBRARIES}
   ${GAZEBO_LIBRARIES}
+  ${SDL_LIBRARIES}
   ${ASV_WAVE_GAZEBO_LIBRARIES_LIST}
 )
 
