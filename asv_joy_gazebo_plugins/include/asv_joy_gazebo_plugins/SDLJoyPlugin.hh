@@ -39,13 +39,13 @@ namespace asv
   class GAZEBO_VISIBLE SDLJoyPlugin : public gazebo::WorldPlugin
   {
     /// \brief Destructor.
-    public: virtual ~SDLJoyPlugin();
+    public: virtual ~SDLJoyPlugin() override;
 
     /// \brief Constructor.
     public: SDLJoyPlugin();
 
-    // Documentation Inherited.
-    public: void Load(gazebo::physics::WorldPtr _world, sdf::ElementPtr _sdf);
+    // Documentation inherited.
+    public: void Load(gazebo::physics::WorldPtr _world, sdf::ElementPtr _sdf) override;
 
     /// \internal
     /// \brief Pointer to the class private data.
