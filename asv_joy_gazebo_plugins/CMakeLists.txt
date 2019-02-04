@@ -73,6 +73,23 @@ target_compile_options(SDLJoyPlugin PRIVATE "-Wno-unknown-pragmas")
 
 list(APPEND ASV_JOY_GAZEBO_PLUGINS_LIST SDLJoyPlugin)
 
+# JoyToForceTorquePlugin
+add_library(JoyToForceTorquePlugin
+  SHARED
+    src/JoyToForceTorquePlugin.cc
+)
+
+target_link_libraries(JoyToForceTorquePlugin
+  ${Boost_LIBRARIES}
+  ${catkin_LIBRARIES}
+  ${GAZEBO_LIBRARIES}
+  ${ASV_WAVE_GAZEBO_LIBRARIES_LIST}
+)
+
+target_compile_options(JoyToForceTorquePlugin PRIVATE "-Wno-unknown-pragmas")
+
+list(APPEND ASV_JOY_GAZEBO_PLUGINS_LIST JoyToForceTorquePlugin)
+
 ############################################################################### 
 # Tests...
 # 
