@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "asv_joy_gazebo_plugins/SDLJoyPlugin.hh"
+#include "asv_joy_gazebo_plugins/JoySDLPlugin.hh"
 
 #include <gazebo/common/common.hh>
 
@@ -31,14 +31,14 @@ using namespace gazebo;
 namespace asv
 {
 
-  GZ_REGISTER_WORLD_PLUGIN(SDLJoyPlugin)
+  GZ_REGISTER_WORLD_PLUGIN(JoySDLPlugin)
 
 ///////////////////////////////////////////////////////////////////////////////
-// SDLJoyPluginPrivate
+// JoySDLPluginPrivate
 
   /// \internal
-  /// \brief Private data for the SDLJoyPlugin
-  class SDLJoyPluginPrivate
+  /// \brief Private data for the JoySDLPlugin
+  class JoySDLPluginPrivate
   {
     /// \brief Publish joystick data.
     public: void Run();
@@ -48,20 +48,13 @@ namespace asv
 
     /// \brief The published topic based on <output_topic>.
     /// The default is '/joy'
-    public: std::string outputTopic;
+    public: std::string outputTopic = "/joy";
 
     /// \brief Publication rate, based on <rate>.
     public: double rate = 50.0;
 
-    /// \brief Data accumulation rate, based on <accumulation_rate>.
-    public: double accumulationRate = 1000.0;
-
     /// \brief The unscaled deadzone, based on <dead_zone>.
-    public: double deadzone = 0.0;
-
-    /// \brief True when the buttons should act like toggle buttons.
-    /// Based on <sticky_buttons>.
-    public: bool stickyButtons = false;
+    public: double deadzone = 0.1;
 
     /// \brief True to stop the plugin.
     public: bool stop = false;
@@ -69,15 +62,8 @@ namespace asv
     /// \brief SDL joystick object.
     public: SDL_Joystick* joystick;
 
-    /// \brief The non-sticky button joystick message.
+    /// \brief The joystick message.
     public: ignition::msgs::Joy joyMsg;
-
-    /// \brief Previous joystick message, used to help compute
-    /// the sticky  buttons.
-    public: ignition::msgs::Joy lastJoyMsg;
-
-    /// \brief Sticky button joystick message.
-    public: ignition::msgs::Joy stickyButtonsJoyMsg;
 
     /// \brief Thread to run the joystick publisher.
     public: std::unique_ptr<std::thread> joyThread;
@@ -89,7 +75,7 @@ namespace asv
     public: ignition::transport::Node::Publisher pub;
   };
 
-  void SDLJoyPluginPrivate::Run()
+  void JoySDLPluginPrivate::Run()
   {
     // Initialise SDL.
     if (SDL_Init(SDL_INIT_JOYSTICK) < 0)
@@ -144,6 +130,7 @@ namespace asv
         // ignition::msgs::Joy.axes is normalised to -1, 1.
         const int a = -32768;
         const int b =  32767;
+        const int d =  b * this->deadzone;
         const float div = b - a;        
 
         // Open the joystick to read the next event 
@@ -154,14 +141,20 @@ namespace asv
         }
         for (int i=0; i<numAxes; ++i)
         {
-          float axesValue = 2 * (SDL_JoystickGetAxis(this->joystick, i) - a) / div - 1.0;
-          this->joyMsg.set_axes(i, axesValue);
+          const int x = SDL_JoystickGetAxis(this->joystick, i);
+          float y = 0.0;
+          if (std::abs(x) > d)
+          {
+            const float div = (x < 0) ? (d - a) : (b - d);
+            y = (x - d) / div;
+          }
+          this->joyMsg.set_axes(i, y);
         }
 
         // Set the buttons
         for (int i=0; i<numButtons; ++i)
         {
-          int buttonValue = SDL_JoystickGetButton(this->joystick, i);
+          const int buttonValue = SDL_JoystickGetButton(this->joystick, i);
           this->joyMsg.set_buttons(i, buttonValue);
         }
         SDL_JoystickClose(joystick);
@@ -180,9 +173,9 @@ namespace asv
   }
 
 ///////////////////////////////////////////////////////////////////////////////
-// SDLJoyPlugin
+// JoySDLPlugin
 
-  SDLJoyPlugin::~SDLJoyPlugin()
+  JoySDLPlugin::~JoySDLPlugin()
   {
     // Stop the thread.
     this->data->stop = true;
@@ -190,49 +183,33 @@ namespace asv
       this->data->joyThread->join();
   }
 
-  SDLJoyPlugin::SDLJoyPlugin() : 
+  JoySDLPlugin::JoySDLPlugin() : 
     WorldPlugin(), 
-    data(new SDLJoyPluginPrivate())
+    data(new JoySDLPluginPrivate())
   {
   }
 
-  void SDLJoyPlugin::Load(physics::WorldPtr /*_world */, sdf::ElementPtr _sdf)
+  void JoySDLPlugin::Load(physics::WorldPtr /*_world */, sdf::ElementPtr _sdf)
   {
     GZ_ASSERT(_sdf != nullptr, "Invalid parameter _sdf");
 
     // Parameters
-    this->data->joyId = _sdf->Get<int>(
-      "joy_id",
-      this->data->joyId).first;
+    this->LoadParam(_sdf, "joy_id", this->data->joyId, this->data->joyId);
+    this->LoadParam(_sdf, "output_topic", this->data->outputTopic, this->data->outputTopic);
+    this->LoadParam(_sdf, "rate", this->data->rate, this->data->rate);
+    this->LoadParam(_sdf, "dead_zone", this->data->deadzone, this->data->deadzone);
 
-    this->data->outputTopic = _sdf->Get<std::string>(
-      "output_topic",
-      "/joy").first;
+    // Constraints
+    this->data->deadzone = ignition::math::clamp(
+      this->data->deadzone, 0.0, 0.9);
 
-    this->data->rate = _sdf->Get<double>(
-      "rate",
-      this->data->rate).first;
-
-    this->data->accumulationRate = _sdf->Get<double>(
-      "accumulation_rate",
-      this->data->accumulationRate).first;
-
-    this->data->deadzone = ignition::math::clamp(_sdf->Get<double>(
-      "dead_zone",
-      this->data->deadzone).first,
-      0.0, 0.9);
-
-    this->data->stickyButtons = _sdf->Get<bool>(
-      "sticky_buttons",
-      this->data->stickyButtons).first;
-    
     // Publishers
     this->data->pub 
       = this->data->node.Advertise<ignition::msgs::Joy>(this->data->outputTopic);
 
     // Run thread
     this->data->joyThread.reset(new std::thread(
-      std::bind(&SDLJoyPluginPrivate::Run, this->data)));
+      std::bind(&JoySDLPluginPrivate::Run, this->data)));
   }
 
 } // namespace gazebo

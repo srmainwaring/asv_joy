@@ -23,7 +23,9 @@ catkin_package(
   INCLUDE_DIRS
     include
   LIBRARIES
-    SDLJoyPlugin
+    JoySDLPlugin
+    TeleopTwistJoyPlugin
+    ThrusterTeleopPlugin
   CATKIN_DEPENDS
     gazebo_ros
   DEPENDS
@@ -55,13 +57,13 @@ link_directories(
 ############################################################################### 
 # Plugins...
 
-# SDLJoyPlugin
-add_library(SDLJoyPlugin
+# JoySDLPlugin
+add_library(JoySDLPlugin
   SHARED
-    src/SDLJoyPlugin.cc
+    src/JoySDLPlugin.cc
 )
 
-target_link_libraries(SDLJoyPlugin
+target_link_libraries(JoySDLPlugin
   ${Boost_LIBRARIES}
   ${catkin_LIBRARIES}
   ${GAZEBO_LIBRARIES}
@@ -69,9 +71,9 @@ target_link_libraries(SDLJoyPlugin
   ${ASV_WAVE_GAZEBO_LIBRARIES_LIST}
 )
 
-target_compile_options(SDLJoyPlugin PRIVATE "-Wno-unknown-pragmas")
+target_compile_options(JoySDLPlugin PRIVATE "-Wno-unknown-pragmas")
 
-list(APPEND ASV_JOY_GAZEBO_PLUGINS_LIST SDLJoyPlugin)
+list(APPEND ASV_JOY_GAZEBO_PLUGINS_LIST JoySDLPlugin)
 
 # TeleopTwistJoyPlugin
 add_library(TeleopTwistJoyPlugin
@@ -116,9 +118,9 @@ list(APPEND ASV_JOY_GAZEBO_PLUGINS_LIST ThrusterTeleopPlugin)
 
 if(CATKIN_ENABLE_TESTING)
 
-  # catkin_add_gtest(UNIT_SDLJoyPlugin_TEST src/SDLJoyPlugin_TEST.cc)
-  # target_link_libraries(UNIT_SDLJoyPlugin_TEST ${ASV_JOY_GAZEBO_PLUGINS_LIST})
-  # target_compile_options(UNIT_SDLJoyPlugin_TEST PRIVATE "-Wno-unknown-pragmas")
+  # catkin_add_gtest(UNIT_JoySDLPlugin_TEST src/JoySDLPlugin_TEST.cc)
+  # target_link_libraries(UNIT_JoySDLPlugin_TEST ${ASV_JOY_GAZEBO_PLUGINS_LIST})
+  # target_compile_options(UNIT_JoySDLPlugin_TEST PRIVATE "-Wno-unknown-pragmas")
 
 endif()
 

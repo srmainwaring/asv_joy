@@ -13,12 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-/// \file SDLJoyPlugin.hh
+/// \file JoySDLPlugin.hh
 /// \brief This file defines a Gazebo WorldPlugin used to publish
 /// messages from a joystick or game controller.
 
-#ifndef _ASV_JOY_GAZEBO_PLUGINS_SDL_JOY_PLUGIN_HH_
-#define _ASV_JOY_GAZEBO_PLUGINS_SDL_JOY_PLUGIN_HH_
+#ifndef _ASV_JOY_GAZEBO_PLUGINS_JOY_SDL_PLUGIN_HH_
+#define _ASV_JOY_GAZEBO_PLUGINS_JOY_SDL_PLUGIN_HH_
 
 #include <gazebo/common/Plugin.hh>
 
@@ -28,29 +28,29 @@ namespace asv
 {
   
 ///////////////////////////////////////////////////////////////////////////////
-// SDLJoyPlugin
+// JoySDLPlugin
 
   /// \internal
-  /// \brief Class to hold private data for SDLJoyPlugin.
-  class SDLJoyPluginPrivate;
+  /// \brief Class to hold private data for JoySDLPlugin.
+  class JoySDLPluginPrivate;
 
   /// \brief A World plugin to capture joystick commands and publish
   /// to a Gazebo topic.
-  class GAZEBO_VISIBLE SDLJoyPlugin : public gazebo::WorldPlugin
+  class GAZEBO_VISIBLE JoySDLPlugin : public gazebo::WorldPlugin
   {
     /// \brief Destructor.
-    public: virtual ~SDLJoyPlugin() override;
+    public: virtual ~JoySDLPlugin() override;
 
     /// \brief Constructor.
-    public: SDLJoyPlugin();
+    public: JoySDLPlugin();
 
     // Documentation inherited.
     public: void Load(gazebo::physics::WorldPtr _world, sdf::ElementPtr _sdf) override;
 
     /// \internal
     /// \brief Pointer to the class private data.
-    private: std::shared_ptr<SDLJoyPluginPrivate> data;
+    private: std::shared_ptr<JoySDLPluginPrivate> data;
   };
 } // namespace asv
 
-#endif // _ASV_JOY_GAZEBO_PLUGINS_SDL_JOY_PLUGIN_HH_
+#endif // _ASV_JOY_GAZEBO_PLUGINS_JOY_SDL_PLUGIN_HH_

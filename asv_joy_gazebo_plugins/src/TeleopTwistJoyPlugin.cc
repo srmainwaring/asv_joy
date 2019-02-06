@@ -42,22 +42,22 @@ namespace asv
   class TeleopTwistJoyPluginPrivate
   {
     /// \brief Topic to subscribe, based on <input_topic>. Default value: '/joy'.
-    public: std::string inputTopic;
+    public: std::string inputTopic = "/joy";
 
     /// \brief Topic to publish, based on <output_topic>. Default value: '/cmd_vel'.
-    public: std::string outputTopic;
+    public: std::string outputTopic = "/cmd_vel"; 
 
     /// \brief Joystick button to enable movement.
-    public: int enableButton = 0;
+    public: unsigned int enableButton = 0;
 
     /// \brief Joystick axis to control linear motion.
-    public: int axisLinear = 0;
+    public: unsigned int axisLinear = 0;
 
     /// \brief Scale to apply to the joystick linear axis (m/s).
     public: double scaleLinear = 0;
 
     /// \brief Joystick axis to control angular motion.
-    public: int axisAngular = 0;
+    public: unsigned int axisAngular = 0;
 
     /// \brief Scale to apply to the joystick angular axis (rad/s).
     public: double scaleAngular = 0;
@@ -97,8 +97,8 @@ namespace asv
     this->data->world = _world;
 
     // Parameters
-    this->LoadParam(_sdf, "input_topic", this->data->inputTopic, "/joy");
-    this->LoadParam(_sdf, "output_topic", this->data->outputTopic, "/cmd_vel");
+    this->LoadParam(_sdf, "input_topic", this->data->inputTopic, this->data->inputTopic);
+    this->LoadParam(_sdf, "output_topic", this->data->outputTopic, this->data->outputTopic);
     this->LoadParam(_sdf, "enable_button", this->data->enableButton, this->data->enableButton);
     this->LoadParam(_sdf, "axis_linear", this->data->axisLinear, this->data->axisLinear);
     this->LoadParam(_sdf, "scale_linear", this->data->scaleLinear, this->data->scaleLinear);
