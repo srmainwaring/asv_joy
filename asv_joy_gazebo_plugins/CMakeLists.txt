@@ -73,6 +73,40 @@ target_compile_options(SDLJoyPlugin PRIVATE "-Wno-unknown-pragmas")
 
 list(APPEND ASV_JOY_GAZEBO_PLUGINS_LIST SDLJoyPlugin)
 
+# TeleopTwistJoyPlugin
+add_library(TeleopTwistJoyPlugin
+  SHARED
+    src/TeleopTwistJoyPlugin.cc
+)
+
+target_link_libraries(TeleopTwistJoyPlugin
+  ${Boost_LIBRARIES}
+  ${catkin_LIBRARIES}
+  ${GAZEBO_LIBRARIES}
+  ${ASV_WAVE_GAZEBO_LIBRARIES_LIST}
+)
+
+target_compile_options(TeleopTwistJoyPlugin PRIVATE "-Wno-unknown-pragmas")
+
+list(APPEND ASV_JOY_GAZEBO_PLUGINS_LIST TeleopTwistJoyPlugin)
+
+# ThrusterTeleopPlugin
+add_library(ThrusterTeleopPlugin
+  SHARED
+    src/ThrusterTeleopPlugin.cc
+)
+
+target_link_libraries(ThrusterTeleopPlugin
+  ${Boost_LIBRARIES}
+  ${catkin_LIBRARIES}
+  ${GAZEBO_LIBRARIES}
+  ${ASV_WAVE_GAZEBO_LIBRARIES_LIST}
+)
+
+target_compile_options(ThrusterTeleopPlugin PRIVATE "-Wno-unknown-pragmas")
+
+list(APPEND ASV_JOY_GAZEBO_PLUGINS_LIST ThrusterTeleopPlugin)
+
 ############################################################################### 
 # Tests...
 # 

@@ -46,9 +46,9 @@ namespace asv
     /// \brief The joystick device id, based on <joy_id>.
     public: int joyId = 0;
 
-    /// \brief The published topic based on <topic>.
+    /// \brief The published topic based on <output_topic>.
     /// The default is '/joy'
-    public: std::string topic;
+    public: std::string outputTopic;
 
     /// \brief Publication rate, based on <rate>.
     public: double rate = 50.0;
@@ -83,10 +83,10 @@ namespace asv
     public: std::unique_ptr<std::thread> joyThread;
 
     /// \brief Ignition transport node for igntopic "/joy".
-    public: ignition::transport::Node ignNode;
+    public: ignition::transport::Node node;
 
     /// \brief Ignition publisher to igntopic "/joy".
-    public: ignition::transport::Node::Publisher ignPub;
+    public: ignition::transport::Node::Publisher pub;
   };
 
   void SDLJoyPluginPrivate::Run()
@@ -166,7 +166,7 @@ namespace asv
         }
         SDL_JoystickClose(joystick);
 
-        this->ignPub.Publish(this->joyMsg);
+        this->pub.Publish(this->joyMsg);
         // @DEBUG_INFO
         // std::cout << this->joyMsg.DebugString() << std::endl;
 
@@ -205,8 +205,8 @@ namespace asv
       "joy_id",
       this->data->joyId).first;
 
-    this->data->topic = _sdf->Get<std::string>(
-      "topic",
+    this->data->outputTopic = _sdf->Get<std::string>(
+      "output_topic",
       "/joy").first;
 
     this->data->rate = _sdf->Get<double>(
@@ -227,8 +227,8 @@ namespace asv
       this->data->stickyButtons).first;
     
     // Publishers
-    this->data->ignPub 
-      = this->data->ignNode.Advertise<ignition::msgs::Joy>(this->data->topic);
+    this->data->pub 
+      = this->data->node.Advertise<ignition::msgs::Joy>(this->data->outputTopic);
 
     // Run thread
     this->data->joyThread.reset(new std::thread(
