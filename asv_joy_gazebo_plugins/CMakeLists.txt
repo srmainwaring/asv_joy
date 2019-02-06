@@ -73,22 +73,39 @@ target_compile_options(SDLJoyPlugin PRIVATE "-Wno-unknown-pragmas")
 
 list(APPEND ASV_JOY_GAZEBO_PLUGINS_LIST SDLJoyPlugin)
 
-# JoyToForceTorquePlugin
-add_library(JoyToForceTorquePlugin
+# TeleopTwistJoyPlugin
+add_library(TeleopTwistJoyPlugin
   SHARED
-    src/JoyToForceTorquePlugin.cc
+    src/TeleopTwistJoyPlugin.cc
 )
 
-target_link_libraries(JoyToForceTorquePlugin
+target_link_libraries(TeleopTwistJoyPlugin
   ${Boost_LIBRARIES}
   ${catkin_LIBRARIES}
   ${GAZEBO_LIBRARIES}
   ${ASV_WAVE_GAZEBO_LIBRARIES_LIST}
 )
 
-target_compile_options(JoyToForceTorquePlugin PRIVATE "-Wno-unknown-pragmas")
+target_compile_options(TeleopTwistJoyPlugin PRIVATE "-Wno-unknown-pragmas")
 
-list(APPEND ASV_JOY_GAZEBO_PLUGINS_LIST JoyToForceTorquePlugin)
+list(APPEND ASV_JOY_GAZEBO_PLUGINS_LIST TeleopTwistJoyPlugin)
+
+# ThrusterTeleopPlugin
+add_library(ThrusterTeleopPlugin
+  SHARED
+    src/ThrusterTeleopPlugin.cc
+)
+
+target_link_libraries(ThrusterTeleopPlugin
+  ${Boost_LIBRARIES}
+  ${catkin_LIBRARIES}
+  ${GAZEBO_LIBRARIES}
+  ${ASV_WAVE_GAZEBO_LIBRARIES_LIST}
+)
+
+target_compile_options(ThrusterTeleopPlugin PRIVATE "-Wno-unknown-pragmas")
+
+list(APPEND ASV_JOY_GAZEBO_PLUGINS_LIST ThrusterTeleopPlugin)
 
 ############################################################################### 
 # Tests...

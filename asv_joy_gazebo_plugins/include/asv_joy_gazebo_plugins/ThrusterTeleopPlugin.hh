@@ -13,12 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-/// \file SDLJoyPlugin.hh
-/// \brief This file defines a Gazebo WorldPlugin used to publish
-/// messages from a joystick or game controller.
+/// \file ThrusterTeleopPlugin.hh
+/// \brief Control a joint in a Gazebo model using a joystick.
 
-#ifndef _ASV_JOY_GAZEBO_PLUGINS_JOY_TO_FORCE_TORQUE_PLUGIN_HH_
-#define _ASV_JOY_GAZEBO_PLUGINS_JOY_TO_FORCE_TORQUE_PLUGIN_HH_
+#ifndef _ASV_JOY_GAZEBO_PLUGINS_THRUSTER_TELEOP_PLUGIN_HH_
+#define _ASV_JOY_GAZEBO_PLUGINS_THRUSTER_TELEOP_PLUGIN_HH_
 
 #include <gazebo/common/Plugin.hh>
 
@@ -36,20 +35,20 @@ namespace asv
 {
   
 ///////////////////////////////////////////////////////////////////////////////
-// JoyToForceTorquePlugin
+// ThrusterTeleopPlugin
 
   /// \internal
-  /// \brief Class to hold private data for JoyToForceTorquePlugin.
-  class JoyToForceTorquePluginPrivate;
+  /// \brief Class to hold private data for ThrusterTeleopPlugin.
+  class ThrusterTeleopPluginPrivate;
 
   /// \brief A Model plugin to convert joystick messages into forces.
-  class GAZEBO_VISIBLE JoyToForceTorquePlugin : public gazebo::ModelPlugin
+  class GAZEBO_VISIBLE ThrusterTeleopPlugin : public gazebo::ModelPlugin
   {
     /// \brief Destructor.
-    public: virtual ~JoyToForceTorquePlugin() override;
+    public: virtual ~ThrusterTeleopPlugin() override;
 
     /// \brief Constructor.
-    public: JoyToForceTorquePlugin();
+    public: ThrusterTeleopPlugin();
 
     // Documentation inherited.
     public: void Load(gazebo::physics::ModelPtr _world, sdf::ElementPtr _sdf) override;
@@ -67,8 +66,8 @@ namespace asv
 
     /// \internal
     /// \brief Pointer to the class private data.
-    private: std::shared_ptr<JoyToForceTorquePluginPrivate> data;
+    private: std::shared_ptr<ThrusterTeleopPluginPrivate> data;
   };
 } // namespace asv
 
-#endif // _ASV_JOY_GAZEBO_PLUGINS_JOY_TO_FORCE_TORQUE_PLUGIN_HH_
+#endif // _ASV_JOY_GAZEBO_PLUGINS_THRUSTER_TELEOP_PLUGIN_HH_
