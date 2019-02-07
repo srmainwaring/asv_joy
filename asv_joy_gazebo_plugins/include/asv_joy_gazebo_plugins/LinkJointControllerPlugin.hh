@@ -44,7 +44,7 @@ namespace asv
 
   /// \brief This is a Model plugin that controls the movement of
   /// a Link and Joint based upon an ignition::msgs::CmdVel2D message.
-  /// A pair of PID controllers are be used to set either the velocity
+  /// A pair of PID controllers are used to set either the velocity
   /// or force for a single link and either the position, velocity or force
   /// for a single joint. 
   ///
@@ -76,7 +76,7 @@ namespace asv
   /// ignition::mgs::CmdVel2D.velocity message setting the target motion
   /// of the link. The default is 1.
   ///
-  /// 4. <link_type>(double): The type of motion or action applied 
+  /// 4. <link_type>(string): The type of motion or action applied 
   /// to the link. Options are 'velocity' or 'force'. The default is 'velocity'.
   ///
   /// 5. <link_pid>(Vector3D): PID gains (kp, ki, kd) for the link PID controller.
@@ -89,7 +89,7 @@ namespace asv
   /// ignition::mgs::CmdVel2D.theta message setting the target motion
   /// of the joint. The default is 1.
   ///
-  /// 8. <joint_type>(double): The type of motion or action applied 
+  /// 8. <joint_type>(string): The type of motion or action applied 
   /// to the joint. Options are 'position', velocity' or 'force'.
   /// The default is 'position'.
   ///
