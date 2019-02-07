@@ -51,16 +51,16 @@ namespace asv
     public: unsigned int enableButton = 0;
 
     /// \brief Joystick axis to control linear motion.
-    public: unsigned int axisLinear = 0;
+    public: unsigned int axisLinear = 3;
 
     /// \brief Scale to apply to the joystick linear axis (m/s).
-    public: double scaleLinear = 0;
+    public: double scaleLinear = 1.0;
 
     /// \brief Joystick axis to control angular motion.
     public: unsigned int axisAngular = 0;
 
     /// \brief Scale to apply to the joystick angular axis (rad/s).
-    public: double scaleAngular = 0;
+    public: double scaleAngular = 1.0;
 
     /// \brief True if a disable mesage has been sent.
     public: bool sentDisableMsg = false;

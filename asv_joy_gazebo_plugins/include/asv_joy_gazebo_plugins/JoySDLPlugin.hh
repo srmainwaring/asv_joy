@@ -34,8 +34,37 @@ namespace asv
   /// \brief Class to hold private data for JoySDLPlugin.
   class JoySDLPluginPrivate;
 
-  /// \brief A plugin used to publish ignition::msgs:Joy messages
-  /// from a joystick or game controller.
+  /// \brief This is a version of the Gazebo JoyPlugin for non-Linux platforms.
+  /// It registers normal button presses and joystick movement with a user 
+  /// specified deadzone region, but does not support the 'sticky_button'
+  /// feature of the Linux  JoyPlugin. 
+  ///
+  /// # Usage
+  /// 
+  /// The plugin is loaded via the World plugin interface using the SDF elements:
+  ///
+  /// \code
+  /// <plugin name="joy" filename="libJoySDLPlugin.so">
+  ///   <joy_id>0</joy_id>
+  ///   <output_topic>/joy</output_topic>
+  ///   <rate>50</rate>
+  ///   <dead_zone>0.1</dead_zone>
+  /// </plugin>
+  /// \endcode
+  ///
+  /// # Configuration
+  /// 
+  /// 1. <joy_id>(int): The joystick identifier. The default value is 0.
+  ///
+  /// 2. <output_topic>(string): The name of the topic to which
+  /// ignition::msgs::Joy are published. The default value is '/joy'.
+  ///
+  /// 3. <rate>(double): The rate at which joystick messages are published.
+  /// The default value is 50 Hz.
+  ///
+  /// 4. <dead_zone>(double between 0 and 0.9): The amount by which the joystick
+  /// has to move to register a value. The default value is 0.1. 
+  ///
   class GAZEBO_VISIBLE JoySDLPlugin : public gazebo::WorldPlugin
   {
     /// \brief Destructor.
