@@ -16,7 +16,7 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <sdf version="1.6">
-  <world name="teleop_twist">
+  <world name="asv_joy_demo">
     
     <!-- Plugins -->
     <plugin name="joy" filename="libJoySDLPlugin.so">

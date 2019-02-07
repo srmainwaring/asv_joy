@@ -1,14 +1,22 @@
-# ASV Joy
+# asv_joy
 
-Joystick and teleop plugins for Gazebo for OSX.
+This package contains Gazebo joystick, teleop and simple link / joint controller plugins for OSX.
+
+The joystick plugin provides a mechanism to publish joystick messages to the Ignition Transport
+communication middleware. The plugin included with Gazebo will only work on Linux.
+
+The teleop plugin may be used to subscribe to joystick messages and republish them
+as command velocity messages on Ignition Transport. These are the Gazebo 2D equivalent of
+[`geometry_msgs/Twist`](http://docs.ros.org/api/geometry_msgs/html/msg/Twist.html)
+messages in ROS and provide a convenient way to control simple robots.
+
+The link / joint controller plugin allows a single link and join in a Gazebo model to be
+controlled by subscribing to a command velocity message.
+
+Combined, these plugins provide a quick method to test the movement of simple robots in Gazebo
+without having to run up and integrate separate ROS nodes.
 
 ## Installation
-
-This package was built and tested with:
-
-- Gazebo version 9.4.1
-- ROS Melodic Morenia
-- OSX 10.11.6
 
 ### Create and configure a workspace
 
@@ -242,8 +250,10 @@ PID gains (kp, ki, kd) for the joint PID controller. Only applied when the motio
 Launch a Gazebo session:
 
 ```bash
-roslaunch asv_joy_gazebo demo.world verbose:=true
+roslaunch asv_joy_gazebo asv_joy_demo_world.launch verbose:=true
 ```
+
+A joystick can be used to control two blocks connected by a revolute joint.
 
 Use `ignition-tools` to list the topics:
 
@@ -301,3 +311,10 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 [GNU General Public License](LICENSE) for more details.
 
+## Acknowledgments
+
+- Kevin J. Walchko's [osx_joystick](https://github.com/BrainSpawnInfosphere/osx_joystick) package which demonstrates how to use [SDL](http://www.libsdl.org/) to poll and publish joystick events.
+- Mike Purvis's [teleop_twist_joy](http://wiki.ros.org/teleop_twist_joy) package which provided a template for the TeleopTwistJoyPlugin.
+- The OSRF Gazebo [tutorials](http://gazebosim.org/tutorials?tut=set_velocity) 
+and [source code](https://bitbucket.org/osrf/gazebo/src) for guidance on the parameter
+interface for the JoySDLPlugin and configuring Gazebo PID controllers for the LinkJointControllerPlugin.  
