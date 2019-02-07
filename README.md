@@ -247,6 +247,8 @@ PID gains (kp, ki, kd) for the joint PID controller. Only applied when the motio
 
 ## Example
 
+![image](https://github.com/srmainwaring/asv_joy/wiki/images/asv_joy_demo_world.gif)
+
 Launch a Gazebo session:
 
 ```bash
