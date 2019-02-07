@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>asv_joy</name>
+  <name>asv_joy_gazebo</name>
   <version>0.0.0</version>
   <description>
-    This package contains Gazebo plugins for controlling
-    joysticks and gamepads.
+    This package contains a Gazebo world to demonstrate 
+    the joystick and teleop plugins.
   </description>
 
   <maintainer email="rhys.mainwaring@me.com">Rhys Mainwaring</maintainer>
@@ -13,10 +13,11 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <exec_depend>asv_joy_gazebo</exec_depend>
   <exec_depend>asv_joy_gazebo_plugins</exec_depend>
+  <exec_depend>gazebo_ros</exec_depend>
 
   <export>
-    <metapackage />
+    <gazebo_ros gazebo_media_path="${prefix}" />
+    <gazebo_ros gazebo_model_path="${prefix}/models" />
   </export>
 </package>
