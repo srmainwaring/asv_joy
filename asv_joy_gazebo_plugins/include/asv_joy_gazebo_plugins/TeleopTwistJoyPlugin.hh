@@ -14,8 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 /// \file TeleopTwistJoyPlugin.hh
-/// \brief A plugin that maps an ignition::msgs::Joy message to
-/// ignition::msgs::CmdVel2D.
+/// \brief A plugin that subscribes to an ignition::msgs::Joy message
+/// and publishes an ignition::msgs::CmdVel2D message (Twist).
 
 #ifndef _ASV_JOY_GAZEBO_PLUGINS_TELEOP_TWIST_JOY_PLUGIN_HH_
 #define _ASV_JOY_GAZEBO_PLUGINS_TELEOP_TWIST_JOY_PLUGIN_HH_

@@ -25,7 +25,7 @@ catkin_package(
   LIBRARIES
     JoySDLPlugin
     TeleopTwistJoyPlugin
-    ThrusterTeleopPlugin
+    LinkJointControllerPlugin
   CATKIN_DEPENDS
     gazebo_ros
   DEPENDS
@@ -92,22 +92,22 @@ target_compile_options(TeleopTwistJoyPlugin PRIVATE "-Wno-unknown-pragmas")
 
 list(APPEND ASV_JOY_GAZEBO_PLUGINS_LIST TeleopTwistJoyPlugin)
 
-# ThrusterTeleopPlugin
-add_library(ThrusterTeleopPlugin
+# LinkJointControllerPlugin
+add_library(LinkJointControllerPlugin
   SHARED
-    src/ThrusterTeleopPlugin.cc
+    src/LinkJointControllerPlugin.cc
 )
 
-target_link_libraries(ThrusterTeleopPlugin
+target_link_libraries(LinkJointControllerPlugin
   ${Boost_LIBRARIES}
   ${catkin_LIBRARIES}
   ${GAZEBO_LIBRARIES}
   ${ASV_WAVE_GAZEBO_LIBRARIES_LIST}
 )
 
-target_compile_options(ThrusterTeleopPlugin PRIVATE "-Wno-unknown-pragmas")
+target_compile_options(LinkJointControllerPlugin PRIVATE "-Wno-unknown-pragmas")
 
-list(APPEND ASV_JOY_GAZEBO_PLUGINS_LIST ThrusterTeleopPlugin)
+list(APPEND ASV_JOY_GAZEBO_PLUGINS_LIST LinkJointControllerPlugin)
 
 ############################################################################### 
 # Tests...

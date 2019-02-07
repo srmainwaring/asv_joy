@@ -212,4 +212,4 @@ namespace asv
       std::bind(&JoySDLPluginPrivate::Run, this->data)));
   }
 
-} // namespace gazebo
+} // namespace asv

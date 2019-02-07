@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-/// \file ThrusterTeleopPlugin.hh
-/// \brief Control a joint in a Gazebo model using a joystick.
+/// \file LinkJointControllerPlugin.hh
+/// \brief PID controllers for a link and joint based upon a CmdVel2D message ('Twist').
 
-#ifndef _ASV_JOY_GAZEBO_PLUGINS_THRUSTER_TELEOP_PLUGIN_HH_
-#define _ASV_JOY_GAZEBO_PLUGINS_THRUSTER_TELEOP_PLUGIN_HH_
+#ifndef _ASV_JOY_GAZEBO_PLUGINS_LINK_JOINT_CONTROLLER_PLUGIN_HH_
+#define _ASV_JOY_GAZEBO_PLUGINS_LINK_JOINT_CONTROLLER_PLUGIN_HH_
 
 #include <gazebo/common/Plugin.hh>
 
@@ -27,7 +27,7 @@ namespace ignition
 {
   namespace msgs
   {
-    class Joy;
+    class CmdVel2D;
   }
 }
 
@@ -35,20 +35,20 @@ namespace asv
 {
   
 ///////////////////////////////////////////////////////////////////////////////
-// ThrusterTeleopPlugin
+// LinkJointControllerPlugin
 
   /// \internal
-  /// \brief Class to hold private data for ThrusterTeleopPlugin.
-  class ThrusterTeleopPluginPrivate;
+  /// \brief Class to hold private data for LinkJointControllerPlugin.
+  class LinkJointControllerPluginPrivate;
 
-  /// \brief A Model plugin to convert joystick messages into forces.
-  class GAZEBO_VISIBLE ThrusterTeleopPlugin : public gazebo::ModelPlugin
+  /// \brief A Model plugin to control a link and joint from CmdVel2D messages.
+  class GAZEBO_VISIBLE LinkJointControllerPlugin : public gazebo::ModelPlugin
   {
     /// \brief Destructor.
-    public: virtual ~ThrusterTeleopPlugin() override;
+    public: virtual ~LinkJointControllerPlugin() override;
 
     /// \brief Constructor.
-    public: ThrusterTeleopPlugin();
+    public: LinkJointControllerPlugin();
 
     // Documentation inherited.
     public: void Load(gazebo::physics::ModelPtr _world, sdf::ElementPtr _sdf) override;
@@ -60,14 +60,14 @@ namespace asv
     public: void Reset() override;
 
     /// \internal
-    /// \brief Callback each time a joy message is received.
-    /// \param[in] _msg Joy message.
-    private: void OnJoyMsg(const ignition::msgs::Joy& _msg);
+    /// \brief Callback each time a CmdVel2D message is received.
+    /// \param[in] _msg CmdVel2D message.
+    private: void OnCmdVelMsg(const ignition::msgs::CmdVel2D& _msg);
 
     /// \internal
     /// \brief Pointer to the class private data.
-    private: std::shared_ptr<ThrusterTeleopPluginPrivate> data;
+    private: std::shared_ptr<LinkJointControllerPluginPrivate> data;
   };
 } // namespace asv
 
-#endif // _ASV_JOY_GAZEBO_PLUGINS_THRUSTER_TELEOP_PLUGIN_HH_
+#endif // _ASV_JOY_GAZEBO_PLUGINS_LINK_JOINT_CONTROLLER_PLUGIN_HH_
