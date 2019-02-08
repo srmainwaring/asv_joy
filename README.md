@@ -171,7 +171,7 @@ The index of the joystick axis that is used to set the value of `ignition::msgs:
 5. `<scale_linear>` (`double`, default: `1.0`) \
 A scale factor to apply to the value of the linear joystick axis (which is in the range -1 to 1).
 
-6. `<axis_angular>` (`int`, default: `3`) \
+6. `<axis_angular>` (`int`, default: `0`) \
 The index of the joystick axis that is used to set the value of `ignition::msgs::CmdVel2D.theta`.
 
 7. `<scale_angular>` (`double`, default: `1.0`) \

@@ -34,14 +34,14 @@ namespace asv
   /// \brief Class to hold private data for JoySDLPlugin.
   class JoySDLPluginPrivate;
 
-  /// \brief This is a version of the Gazebo JoyPlugin for non-Linux platforms.
-  /// It registers normal button presses and joystick movement with a user 
-  /// specified deadzone region, but does not support the 'sticky_button'
-  /// feature of the Linux  JoyPlugin. 
+  /// \brief This is a version of the Gazebo JoyPlugin for OSX.
+  /// It registers button presses and joystick movement with a user 
+  /// configurable deadzone region, but does not support the 'sticky_button'
+  /// feature of the Linux version. 
   ///
   /// # Usage
   /// 
-  /// The plugin is loaded via the World plugin interface using the SDF elements:
+  /// Add the SDF for plugin to the <world> element of your world file:
   ///
   /// \code
   /// <plugin name="joy" filename="libJoySDLPlugin.so">
@@ -52,18 +52,23 @@ namespace asv
   /// </plugin>
   /// \endcode
   ///
-  /// # Configuration
+  /// # Published Topics
+  ///
+  /// 1. /joy (ignition::msgs::Joy)
+  ///
+  /// # Parameters
   /// 
-  /// 1. <joy_id>(int): The joystick identifier. The default value is 0.
+  /// 1. <joy_id> (int, default: 0)
+  ///   The joystick identifier.
   ///
-  /// 2. <output_topic>(string): The name of the topic to which
-  /// ignition::msgs::Joy are published. The default value is '/joy'.
+  /// 2. <output_topic> (string, default /joy)
+  ///   The name of the topic to which ignition::msgs::Joy are published.
   ///
-  /// 3. <rate>(double): The rate at which joystick messages are published.
-  /// The default value is 50 Hz.
+  /// 3. <rate> (double, default: 50)
+  ///   The rate in HZ at which joystick messages are published.
   ///
-  /// 4. <dead_zone>(double between 0 and 0.9): The amount by which the joystick
-  /// has to move to register a value. The default value is 0.1. 
+  /// 4. <dead_zone> (double between 0 and 0.9, default: 0.1)
+  ///   The amount by which the joystick has to move to register a value.
   ///
   class GAZEBO_VISIBLE JoySDLPlugin : public gazebo::WorldPlugin
   {
