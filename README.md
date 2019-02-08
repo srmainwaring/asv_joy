@@ -1,20 +1,21 @@
-# asv_joy
+# ASV Joy
 
-This package contains Gazebo joystick, teleop and simple link / joint controller plugins for OSX.
+This package contains Gazebo joystick, teleop and simple link / joint controller plugins.
 
 The joystick plugin provides a mechanism to publish joystick messages to the Ignition Transport
-communication middleware. The plugin included with Gazebo will only work on Linux.
+communication middleware. It is an alternative to the `JoyPlugin` distributed with Gazebo, which will
+only run on Linux.
 
-The teleop plugin may be used to subscribe to joystick messages and republish them
-as command velocity messages on Ignition Transport. These are the Gazebo 2D equivalent of
+The teleop plugin may be used to subscribe to joystick messages and convert them
+to command velocity messages on Ignition Transport. These are a Gazebo equivalent of
 [`geometry_msgs/Twist`](http://docs.ros.org/api/geometry_msgs/html/msg/Twist.html)
 messages in ROS and provide a convenient way to control simple robots.
 
-The link / joint controller plugin allows a single link and join in a Gazebo model to be
+The link / joint controller plugin allows a single link and joint in a Gazebo model to be
 controlled by subscribing to a command velocity message.
 
 Combined, these plugins provide a quick method to test the movement of simple robots in Gazebo
-without having to run up and integrate separate ROS nodes.
+without having to run separate ROS nodes.
 
 ## Installation
 
@@ -118,7 +119,7 @@ The amount by which the joystick has to move to register a value.
 This is a Gazebo world plugin that maps joystick messages into
 command messages and publishes them to an Ignition transport topic.
 It's behaviour and usage are similar to the ROS [`teleop_twist_joy`](http://wiki.ros.org/teleop_twist_joy)
-package upon which it is based.
+package on which it is based.
 
 ### Usage
 
@@ -244,12 +245,11 @@ The type of motion or action applied to the joint. Options are `position`, `velo
 5. `<joint_pid>` (`Vector3D`, default: `(1000 0 10)`) \
 PID gains (kp, ki, kd) for the joint PID controller. Only applied when the motion type is `position` or `velocity`.
 
-
 ## Example
 
 ![image](https://github.com/srmainwaring/asv_joy/wiki/images/asv_joy_demo_world.gif)
 
-Launch a Gazebo session:
+Launch the example world in a Gazebo session:
 
 ```bash
 roslaunch asv_joy_gazebo asv_joy_demo_world.launch verbose:=true
@@ -261,6 +261,8 @@ Use `ignition-tools` to list the topics:
 
 ```bash
 $ ign topic --list
+/cmd_vel
+...
 /joy
 ```
 
