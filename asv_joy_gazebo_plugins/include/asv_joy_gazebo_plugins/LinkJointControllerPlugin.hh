@@ -52,7 +52,7 @@ namespace asv
   ///
   /// Add the SDF for the plugin to the <model> element of your Gazebo model:
   ///
-  /// /code
+  /// \code
   /// <plugin name="link_joint_controller" filename="libLinkJointControllerPlugin.so">
   ///   <input_topic>/cmd_vel</input_topic>
   ///   <link_name>thruster_link</link_name>
@@ -64,7 +64,7 @@ namespace asv
   ///   <joint_type>position</joint_type>
   ///   <joint_pid>1000 0 10</joint_pid>
   /// </plugin>
-  /// /endcode
+  /// \endcode
   ///
   /// # Subscribed Topics
   ///

@@ -51,7 +51,7 @@ namespace asv
   ///
   /// Add the SDF for plugin to the <world> element of your world file:
   ///
-  /// /code
+  /// \code
   /// <plugin name="teleop_twist_joy" filename="libTeleopTwistJoyPlugin.so">
   ///   <input_topic>/joy</input_topic>
   ///   <output_topic>/cmd_vel</output_topic>
@@ -61,7 +61,7 @@ namespace asv
   ///   <axis_angular>0</axis_angular>
   ///   <scale_angular>1.0</scale_angular>
   /// </plugin>
-  /// /endcode
+  /// \endcode
   ///
   /// # Subscribed Topics
   ///

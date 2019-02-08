@@ -38,21 +38,11 @@ catkin init
 
 Configure catkin:
 
-On OSX force catkin to use the [homebrew](https://brew.sh/) version of python
-to avoid any conflict with the system version.
-See Mike Purvis's [ros-install-osx](https://github.com/mikepurvis/ros-install-osx)
-for details.
-
 ```bash
-catkin config \
-  --cmake-args \
-    -DCATKIN_ENABLE_TESTING=1 \
-    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-    -DCMAKE_FIND_FRAMEWORK=LAST \
-    -DPYTHON_EXECUTABLE=$(which python2) \
-    -DPYTHON_LIBRARY=$(python2 -c "import sys; print sys.prefix")/lib/libpython2.7.dylib \
-    -DPYTHON_INCLUDE_DIR=$(python2 -c "import sys; print sys.prefix")/include/python2.7
+catkin config --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo
 ```
+
+### Clone and build the package
 
 Clone the `asv_joy` repository:
 
