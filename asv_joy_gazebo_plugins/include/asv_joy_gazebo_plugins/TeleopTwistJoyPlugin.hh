@@ -42,16 +42,16 @@ namespace asv
   /// \brief Class to hold private data for TeleopTwistJoyPlugin.
   class TeleopTwistJoyPluginPrivate;
 
-  /// \brief This is a World plugin that maps joystick messages into
-  /// 'twist'commands (ignition::msgs::CmdVel2D) and publishes them  
-  /// to an Ignition transport topic.  It's behaviour and usage are
-  /// similar to the ROS teleop_twist_joy package upon which it is based.
+  /// \brief This is a Gazebo world plugin that maps joystick messages into
+  /// command messages and publishes them to an Ignition transport topic.
+  /// It's behaviour and usage are similar to the ROS teleop_twist_joy package
+  /// on which it is based.
   ///
   /// # Usage
   ///
-  /// The plugin is loaded via the World plugin interface using the SDF elements: 
+  /// Add the SDF for plugin to the <world> element of your world file:
   ///
-  /// /code
+  /// \code
   /// <plugin name="teleop_twist_joy" filename="libTeleopTwistJoyPlugin.so">
   ///   <input_topic>/joy</input_topic>
   ///   <output_topic>/cmd_vel</output_topic>
@@ -61,30 +61,44 @@ namespace asv
   ///   <axis_angular>0</axis_angular>
   ///   <scale_angular>1.0</scale_angular>
   /// </plugin>
-  /// /endcode
+  /// \endcode
   ///
-  /// # Configuration
+  /// # Subscribed Topics
   ///
-  /// 1. <input_topic>(string): The name of the topic to subscribe to
-  /// ignition::msgs::Joy messages. The default is '/joy'.
+  /// 1. /joy (ignition::msgs::Joy)
   ///
-  /// 2. <output_topic>(string): The name of the topic to which
-  /// ignition::msgs::CmdVel2 messages are published. The default is '/cmd_vel'.
+  /// # Published Topics
   ///
-  /// 3. <enable_button>(int): The index of the button that must be held
-  /// for command messages to be published (deadman switch). The default is 0.
+  /// 1. /cmd_vel (ignition::msgs::CmdVel2D)
   ///
-  /// 4. <axis_linear>(int): The index of the joystick axis that sets the 
-  /// value of ignition::msgs::CmdVel2D.velocity. The default is 3.
   ///
-  /// 5. <scale_linear>(double): A scale factor to apply to the value of the 
-  /// linear joystick axis (which is in the range -1 to 1). The default is 1.
+  /// # Parameters
   ///
-  /// 6. <axis_angular>(int): The index of the joystick axis that sets the 
-  /// value of ignition::msgs::CmdVel2D.theta. The default is 0.
+  /// 1. <input_topic> (string, default: /joy)
+  ///   The name of the topic to subscribe to ignition::msgs::Joy messages.
   ///
-  /// 7. <scale_angular>(double): A scale factor to apply to the value of the 
-  /// angular joystick axis (which is in the range -1 to 1). The default is 1.
+  /// 2. <output_topic> (string, default: /cmd_vel)
+  ///   The name of the topic to which ignition::msgs::CmdVel2 messages are published.
+  ///
+  /// 3. <enable_button> (int, default 0) 
+  ///    The index of the button that must be held for command messages
+  ///    to be published (deadman switch).
+  ///
+  /// 4. <axis_linear> (int, default: 3)
+  ///   The index of the joystick axis that sets the value of
+  ///   ignition::msgs::CmdVel2D.velocity.
+  ///
+  /// 5. <scale_linear> (double, default: 1.0)
+  ///   A scale factor to apply to the value of the linear joystick axis
+  ///   (which is in the range -1 to 1).
+  ///
+  /// 6. <axis_angular> (int, default: 0)
+  ///   The index of the joystick axis that sets the value of
+  ///   ignition::msgs::CmdVel2D.theta.
+  ///
+  /// 7. <scale_angular> (double, default: 1.0)
+  ///   A scale factor to apply to the value of the angular joystick axis
+  ///   (which is in the range -1 to 1).
   ///
   class GAZEBO_VISIBLE TeleopTwistJoyPlugin : public gazebo::WorldPlugin
   {
