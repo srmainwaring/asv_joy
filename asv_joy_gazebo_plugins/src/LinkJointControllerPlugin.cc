@@ -217,9 +217,10 @@ namespace asv
 
       if (this->data->jointType == "position")
       {
+        double currPos = this->data->joint->Position(0);
         controller->SetPositionTarget(
           this->data->joint->GetScopedName(),
-          _msg.theta() * this->data->jointScale);
+          currPos + _msg.theta() * this->data->jointScale);
       }
       else if (this->data->jointType == "velocity")
       {
