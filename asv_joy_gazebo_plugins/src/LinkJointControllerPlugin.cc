@@ -18,6 +18,7 @@
 #include <gazebo/common/common.hh>
 #include <gazebo/physics/physics.hh>
 
+#include <ignition/math/Helpers.hh>
 #include <ignition/msgs.hh>
 #include <ignition/transport/Node.hh>
 
@@ -50,6 +51,9 @@ namespace asv
     /// \brief Scaling to apply to the CmdVel2D.velocity component of the message. 
     public: double linkScale = 1.0;
 
+    /// \brief The current link setpoint. 
+    public: double linkSetPoint = 0.0;
+
     /// \brief PID gains for the link controller.
     public: ignition::math::Vector3d linkPID = ignition::math::Vector3d(1000, 0 , 10);
 
@@ -67,6 +71,15 @@ namespace asv
 
     /// \brief Scaling to apply to the CmdVel2D.theta component of the message. 
     public: double jointScale = 1.0;
+
+    /// \brief The current joint setpoint.
+    public: double jointSetPoint = 0.0;
+
+    /// \brief The inital joint lower limit.
+    public: double jointLowerLimit = 0.0;
+
+    /// \brief The inital joint upper limit.
+    public: double jointUpperLimit = 0.0;
 
     /// \brief PID gains for the link controller.
     public: ignition::math::Vector3d jointPID = ignition::math::Vector3d(1000, 0 , 10);
@@ -144,6 +157,12 @@ namespace asv
     }
     else
     {
+      // Capture initial limits as the 'limit' controller will change
+      // the settings on the joint.
+      this->data->jointLowerLimit = this->data->joint->LowerLimit(0);
+      this->data->jointUpperLimit = this->data->joint->UpperLimit(0);
+
+      // Create PID Controllers
       auto controller = this->data->model->GetJointController();
       common::PID pid(
         this->data->jointPID.X(),
@@ -192,20 +211,16 @@ namespace asv
 
       if (this->data->linkType == "velocity")
       {
+        this->data->linkSetPoint = _msg.velocity() * this->data->linkScale;
         ignition::math::Vector3d currLinearVel = this->data->link->RelativeLinearVel();
-        double targetVel = _msg.velocity() * this->data->linkScale;
-        double linearError = currLinearVel.X() - targetVel;
-
-        ignition::math::Vector3d force(
-          controller.Update(linearError, dt), 0, 0);
-
+        double linearError = currLinearVel.X() - this->data->linkSetPoint;
+        ignition::math::Vector3d force(controller.Update(linearError, dt), 0, 0);
         this->data->link->AddRelativeForce(force);
       }
       else if (this->data->linkType == "force")
       {
-        ignition::math::Vector3d force(
-          _msg.velocity() * this->data->linkScale, 0, 0);
-
+        this->data->linkSetPoint = _msg.velocity() * this->data->linkScale;
+        ignition::math::Vector3d force(this->data->linkSetPoint, 0, 0);
         this->data->link->AddRelativeForce(force);
       }
     }
@@ -217,21 +232,38 @@ namespace asv
 
       if (this->data->jointType == "position")
       {
-        double currPos = this->data->joint->Position(0);
+        double sp = ignition::math::clamp(
+          this->data->jointSetPoint + _msg.theta() * this->data->jointScale,
+          this->data->joint->LowerLimit(0),
+          this->data->joint->UpperLimit(0));
+        this->data->jointSetPoint = sp;
         controller->SetPositionTarget(
           this->data->joint->GetScopedName(),
-          currPos + _msg.theta() * this->data->jointScale);
+          this->data->jointSetPoint);
       }
       else if (this->data->jointType == "velocity")
       {
+        this->data->jointSetPoint = _msg.theta() * this->data->jointScale;
         controller->SetVelocityTarget(
           this->data->joint->GetScopedName(),
-          _msg.theta() * this->data->jointScale);
+          this->data->jointSetPoint);
       } 
       else if (this->data->jointType == "force")
       {
+        this->data->jointSetPoint = _msg.theta() * this->data->jointScale;
         this->data->joint->SetForce(
-          0, _msg.theta() * this->data->jointScale);          
+          0, this->data->jointSetPoint);          
+      }
+      else if (this->data->jointType == "limit")
+      {
+        double sp = ignition::math::clamp(
+          this->data->jointSetPoint + _msg.theta() * this->data->jointScale,
+          this->data->jointLowerLimit,
+          this->data->jointUpperLimit);
+
+        this->data->jointSetPoint = std::max(sp, 0.01);
+        this->data->joint->SetUpperLimit(0, this->data->jointSetPoint);
+        this->data->joint->SetLowerLimit(0, -this->data->jointSetPoint);
       }
     }    
 
